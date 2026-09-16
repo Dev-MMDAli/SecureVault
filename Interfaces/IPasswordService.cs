@@ -26,5 +26,10 @@ namespace SecureVault.Interfaces
         //    ورودی: int id
         //    خروجی: -
         Task<bool> DeleteAsync(int id,int userId);
+
+        // 6 search serviceName or url
+        // input : string search, int userId
+        // output : PasswordEntry?
+        Task<IEnumerable<PasswordEntry>> SearchAsync(string search,int userId);
     }
 }

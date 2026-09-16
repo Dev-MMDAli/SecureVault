@@ -19,5 +19,8 @@ namespace SecureVault.Interfaces
 
         // دخیره تغییرات 
         Task SaveChangesAsync();
+        
+        // v2 : Added Search By serviceName or URL
+         Task<IEnumerable<PasswordEntry>> SearchByUserIdAsync(string searchTerm, int userId);
     }
 }

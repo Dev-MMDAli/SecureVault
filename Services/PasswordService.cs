@@ -1,4 +1,5 @@
-﻿using SecureVault.DTOs;
+﻿using System.Collections;
+using SecureVault.DTOs;
 using SecureVault.Interfaces;
 using SecureVault.Models;
 
@@ -132,6 +133,24 @@ namespace SecureVault.Services
                await _repository.SaveChangesAsync();
                return true;
             }
+        }
+
+        public async Task<IEnumerable<PasswordEntry>> SearchAsync(string searchTerm, int userId)
+        {
+
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return Enumerable.Empty<PasswordEntry>();
+            }
+            var result= await _repository.SearchByUserIdAsync(searchTerm, userId);
+
+            foreach (var password in result)
+                {
+                    password.HashPassword = _encrypt.Decrypt(password.HashPassword);
+                }
+            
+
+            return result;
         }
     }
 }

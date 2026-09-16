@@ -88,5 +88,13 @@ namespace SecureVault.Controllers
             }
             return NoContent();
         }
+            
+        [HttpGet("search/{search}")]
+        public async Task<IActionResult> Search(string search)
+        {
+            var userId = GetCurrentUserId();
+            var result = await _passwordService.SearchAsync(search, userId);
+            return Ok(result);
+        }
     }
 }

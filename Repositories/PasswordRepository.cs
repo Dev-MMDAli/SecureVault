@@ -2,6 +2,7 @@
 using SecureVault.Data;
 using SecureVault.Interfaces;
 using SecureVault.Models;
+using SQLitePCL;
 
 namespace SecureVault.Repositories
 {
@@ -56,6 +57,16 @@ namespace SecureVault.Repositories
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        //    - SearchByUserIdAsync
+        public async Task<IEnumerable<PasswordEntry>> SearchByUserIdAsync(string searchTerm, int userId)
+        {
+            return await _context.PasswordEntries.AsNoTracking()
+                .Where(u => 
+                    u.UserId == userId &&
+                     (EF.Functions.Like(u.ServiceName, $"%{searchTerm}%") || EF.Functions.Like(u.URL,$"%{searchTerm}%")))
+                .ToListAsync();
         }
     }
 }
